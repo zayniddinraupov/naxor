@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Таклифнома / Приглашение — Юсуповлар хонадони</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-deep: #081a15;
+            --accent-gold: #d4af37;
+            --gold-light: #f3e5ab;
+            --text-main: #f5f5f5;
+            --text-muted: #a0b2a6;
+            --glass-bg: rgba(14, 38, 31, 0.78);
+            --glass-border: rgba(212, 175, 55, 0.3);
+            --radius: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px 12px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 20%, #12382c 0%, #050f0c 100%);
+            z-index: 0;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4af37' fill-opacity='0.04' fill-rule='evenodd'%3E%3Cpath d='M40 40L20 0H0v20l40 40 40-40V0H60L40 40zM0 60h20l20-20 20 20h20V40L40 0 0 40v20z'/%3E%3C/g%3E%3C/svg%3E");
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: var(--radius);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(212, 175, 55, 0.05);
+            padding: 36px 22px;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(14, 38, 31, 0.9);
+            border: 1.5px solid var(--accent-gold);
+            color: var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 99;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+
+        .music-btn:active {
+            transform: scale(0.92);
+        }
+
+        .music-btn.playing {
+            animation: pulseGlow 2s infinite alternate;
+            background: var(--accent-gold);
+            color: #081a15;
+        }
+
+        .music-btn.playing .music-icon {
+            animation: spin 6s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
+            100% { box-shadow: 0 0 25px rgba(212, 175, 55, 0.8); }
+        }
+
+        .sound-wave {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px solid var(--accent-gold);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .music-btn.playing .sound-wave {
+            animation: ripple 2s infinite ease-out;
+        }
+
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+
+        /* Language Switcher */
+        .lang-switch {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            display: flex;
+            gap: 2px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 3px;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            padding: 4px 10px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 14px;
+            transition: all 0.3s;
+        }
+
+        .lang-btn.active {
+            background: var(--accent-gold);
+            color: #000;
+        }
+
+        /* Top Ornament & Typography */
+        .ornament-top {
+            width: 60px;
+            height: 20px;
+            margin: 0 auto 10px;
+            fill: var(--accent-gold);
+            opacity: 0.8;
+        }
+
+        .bismillah {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            color: var(--gold-light);
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 34px;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .divider-line {
+            height: 1px;
+            width: 40px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+        }
+
+        .divider-diamond {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-gold);
+            transform: rotate(45deg);
+        }
+
+        .invitation-text {
+            font-size: 14px;
+            color: #e0e0e0;
+            line-height: 1.6;
+            font-weight: 300;
+            margin-bottom: 24px;
+        }
+
+        .family-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold-light);
+            display: block;
+            margin-top: 8px;
+        }
+
+        /* Info Section */
+        .info-box {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            padding: 16px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-gold);
+            flex-shrink: 0;
+        }
+
+        .info-text label {
+            display: block;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .info-text span {
+            font-size: 14px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .timer-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .timer-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 10px 4px;
+        }
+
+        .timer-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold-light);
+            display: block;
+            line-height: 1;
+        }
+
+        .timer-txt {
+            font-size: 9px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            display: block;
+        }
+
+        /* Buttons & Forms */
+        .action-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
+            color: #000000;
+            font-weight: 600;
+            border: none;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-gold:active {
+            transform: scale(0.98);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+        }
+
+        .btn-outline:active {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .rsvp-block {
+            border-top: 1px solid rgba(212, 175, 55, 0.15);
+            padding-top: 24px;
+        }
+
+        .rsvp-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            color: var(--gold-light);
+            margin-bottom: 4px;
+        }
+
+        .rsvp-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+            margin-bottom: 12px;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-gold);
+        }
+
+        .radio-options {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .radio-box {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.2);
+            font-size: 11px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-box.active {
+            border-color: var(--accent-gold);
+            background: rgba(212, 175, 55, 0.15);
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .radio-box input {
+            display: none;
+        }
+
+        .success-msg {
+            display: none;
+            background: rgba(46, 125, 50, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.4);
+            color: #81c784;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Authentic Uzbek Instrumental Samarkand / Shashmakom / Nay Melodic Audio -->
+<audio id="bgMusic" loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c82305a4.mp3?filename=oriental-traditional-instrumental-music-10023.mp3" type="audio/mpeg">
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=oriental-traditional-instrumental-112343.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Music control button -->
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()" aria-label="Музыка">
+    <div class="sound-wave"></div>
+    <svg class="music-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+    </svg>
+</button>
+
+<div class="card">
+    <div class="lang-switch">
+        <button class="lang-btn active" onclick="setLang('uz', event)">UZ</button>
+        <button class="lang-btn" onclick="setLang('ru', event)">RU</button>
+    </div>
+
+    <svg class="ornament-top" viewBox="0 0 100 30">
+        <path d="M50 0 C60 10 70 5 80 15 C90 25 95 10 100 15 C90 20 80 15 70 25 C60 15 50 25 50 0 Z M50 0 C40 10 30 5 20 15 C10 25 5 10 0 15 C10 20 20 15 30 25 C40 15 50 25 50 0 Z"/>
+    </svg>
+    
+    <div class="bismillah">Bismillahir Rahmanir Rahim</div>
+    <div class="subtitle" id="txt-subtitle">Таклифнома</div>
+    <h1 class="title" id="txt-title">Наҳор оши</h1>
+
+    <div class="divider">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+    </div>
+
+    <p class="invitation-text" id="txt-body">
+        Ҳурматли меҳмонимиз! Сизни фарзандларимизнинг никоҳ тўйи муносабати билан ёзиладиган Наҳор оши дастурхонига таклиф этамиз.
+        <span class="family-name" id="txt-family">Юсуповлар хонадони</span>
+    </p>
+
+    <div class="info-box">
+        <div class="info-item">
+            <div class="info-icon">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+            <div class="info-text">
+                <label id="lbl-date">Сана ва вақт</label>
+                <span id="val-date">7 Октябрь, 2026 • 08:00</span>
+            </div>
+        </div>
+        <div class="info-item">
+            <div class="info-icon">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            </div>
+            <div class="info-text">
+                <label id="lbl-place">Манзил</label>
+                <span id="val-place">Самарқанд шаҳри, Юсуповлар хонадонида (Уйда)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Countdown Timer -->
+    <div class="timer-label" id="txt-timer-title">Тадбир бошланишига қолди:</div>
+    <div class="timer-grid">
+        <div class="timer-card">
+            <span class="timer-num" id="cd-days">00</span>
+            <span class="timer-txt" id="lbl-days">Кун</span>
+        </div>
+        <div class="timer-card">
+            <span class="timer-num" id="cd-hours">00</span>
+            <span class="timer-txt" id="lbl-hours">Соат</span>
+        </div>
+        <div class="timer-card">
+            <span class="timer-num" id="cd-mins">00</span>
+            <span class="timer-txt" id="lbl-mins">Дақиқа</span>
+        </div>
+        <div class="timer-card">
+            <span class="timer-num" id="cd-secs">00</span>
+            <span class="timer-txt" id="lbl-secs">Сек</span>
+        </div>
+    </div>
+
+    <!-- Navigation links for Samarkand location -->
+    <div class="action-btns">
+        <a href="https://yandex.com/maps/?text=Samarkand" target="_blank" class="btn btn-gold">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            <span id="btn-yandex">Яндекс Навигатор</span>
+        </a>
+        <a href="https://maps.google.com/?q=Samarkand" target="_blank" class="btn btn-outline">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            <span id="btn-google">Google Maps</span>
+        </a>
+    </div>
+</div>
+
+<script>
+    const audio = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    let isPlaying = false;
+
+    // Toggle audio playback
+    function toggleMusic() {
+        if (isPlaying) {
+            audio.pause();
+            musicBtn.classList.remove('playing');
+            isPlaying = false;
+        } else {
+            audio.play().then(() => {
+                musicBtn.classList.add('playing');
+                isPlaying = true;
+            }).catch(e => console.log("Playback error:", e));
+        }
+    }
+
+    // Auto-play on first tap or click anywhere on screen
+    function autoPlayInit() {
+        if (!isPlaying) {
+            audio.play().then(() => {
+                musicBtn.classList.add('playing');
+                isPlaying = true;
+            }).catch(() => {});
+        }
+        document.removeEventListener('click', autoPlayInit);
+        document.removeEventListener('touchstart', autoPlayInit);
+    }
+
+    document.addEventListener('click', autoPlayInit, { once: true });
+    document.addEventListener('touchstart', autoPlayInit, { once: true });
+
+    // Localization dictionaries
+    const i18n = {
+        uz: {
+            subtitle: "Таклифнома",
+            title: "Наҳор оши",
+            body: "Ҳурматли меҳмонимиз! Сизни фарзандларимизнинг никоҳ тўйи муносабати билан ёзиладиган Наҳор оши дастурхонига таклиф этамиз.",
+            family: "Юсуповлар хонадони",
+            lblDate: "Сана ва вақт",
+            valDate: "7 Октябрь, 2026 • 08:00",
+            lblPlace: "Манзил",
+            valPlace: "Самарқанд шаҳри, Юсуповлар хонадонида (Уйда)",
+            timerTitle: "Тадбир бошланишига қолди:",
+            days: "Кун",
+            hours: "Соат",
+            mins: "Дақиқа",
+            secs: "Сек",
+            btnYandex: "Яндекс Навигатор",
+            btnGoogle: "Google Maps"
+        },
+        ru: {
+            subtitle: "Приглашение",
+            title: "Утренний нахор",
+            body: "Уважаемый гость! Приглашаем вас разделить с нами радость торжества и стать гостем на Утреннем нахоре по случаю свадьбы наших детей.",
+            family: "Семья Юсуповых",
+            lblDate: "Дата и время",
+            valDate: "7 Октября, 2026 • 08:00",
+            lblPlace: "Адрес",
+            valPlace: "г. Самарканд, в доме семьи Юсуповых (Дома)",
+            timerTitle: "До начала мероприятия осталось:",
+            days: "Дней",
+            hours: "Часов",
+            mins: "Минут",
+            secs: "Сек",
+            btnYandex: "Яндекс Навигатор",
+            btnGoogle: "Google Maps"
+        }
+    };
+
+    function setLang(lang, ev) {
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        if(ev && ev.target) ev.target.classList.add('active');
+
+        const data = i18n[lang];
+        document.getElementById('txt-subtitle').innerText = data.subtitle;
+        document.getElementById('txt-title').innerText = data.title;
+        document.getElementById('txt-body').childNodes[0].nodeValue = data.body + ' ';
+        document.getElementById('txt-family').innerText = data.family;
+        document.getElementById('lbl-date').innerText = data.lblDate;
+        document.getElementById('val-date').innerText = data.valDate;
+        document.getElementById('lbl-place').innerText = data.lblPlace;
+        document.getElementById('val-place').innerText = data.valPlace;
+        document.getElementById('txt-timer-title').innerText = data.timerTitle;
+        document.getElementById('lbl-days').innerText = data.days;
+        document.getElementById('lbl-hours').innerText = data.hours;
+        document.getElementById('lbl-mins').innerText = data.mins;
+        document.getElementById('lbl-secs').innerText = data.secs;
+        document.getElementById('btn-yandex').innerText = data.btnYandex;
+        document.getElementById('btn-google').innerText = data.btnGoogle;
+    }
+
+    // Countdown to October 7, 2026, 08:00 AM
+    const targetDate = new Date("2026-10-07T08:00:00").getTime();
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const diff = targetDate - now;
+
+        if (diff > 0) {
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('cd-days').innerText = d < 10 ? '0' + d : d;
+            document.getElementById('cd-hours').innerText = h < 10 ? '0' + h : h;
+            document.getElementById('cd-mins').innerText = m < 10 ? '0' + m : m;
+            document.getElementById('cd-secs').innerText = s < 10 ? '0' + s : s;
+        }
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+</script>
+
+</body>
+</html>
