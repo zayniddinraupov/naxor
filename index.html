@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Таклифнома / Приглашение — Юсуповлар ва Ражабовлар</title>
+<title>Таклифнома / Приглашение — Юсуповлар оиласи</title>
 <meta name="description" content="Наҳор оши · 7 октябрь 2026 · 08:00 · Самарқанд">
 <meta property="og:title" content="Таклифнома — Наҳор оши">
-<meta property="og:description" content="7 октябрь 2026, 08:00 · Самарқанд · Юсуповлар ва Ражабовлар хонадонлари">
+<meta property="og:description" content="7 октябрь 2026, 08:00 · Самарқанд · Юсуповлар оиласи">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#062226">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Montserrat:wght@300;400;500;600&family=Noto+Serif:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Noto+Serif:wght@500;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --night:#062226; --teal:#0d3c40; --turq:#2bb3aa; --gold:#c9a24b; --gold-l:#f1dc9a;
@@ -59,11 +59,12 @@ main{position:relative;z-index:2;width:100%;max-width:420px}
 .lang button{border:0;background:none;color:var(--muted);font:600 12px var(--sans);padding:7px 13px;min-height:32px;border-radius:14px;cursor:pointer}
 .lang button[aria-pressed=true]{background:var(--gold);color:#1b1500}
 
-.arch{display:block;width:100%;height:auto;margin-bottom:-1px;overflow:visible}
+.archwrap{position:relative;aspect-ratio:320/120;margin-bottom:-1px}
+.capbg{position:absolute;inset:0;background:rgba(7,38,41,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);clip-path:url(#archClip)}
+.archwrap svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .card{background:rgba(7,38,41,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   border:1px solid rgba(201,162,75,.45);border-top:0;border-radius:0 0 22px 22px;padding:6px 24px 34px;text-align:center;
   box-shadow:0 30px 70px rgba(0,0,0,.55)}
-.bism{font-family:'Amiri',serif;font-size:28px;line-height:1.5;color:var(--gold-l);margin:2px 0 14px;direction:rtl}
 .sub{font-size:14px;letter-spacing:.06em;color:var(--turq);font-weight:500}
 h1{font-family:var(--serif);font-weight:700;font-size:44px;line-height:1.1;margin:6px 0 4px;
   background:linear-gradient(100deg,#b88a2a 10%,#fff3c4 45%,#c9a24b 60%,#b88a2a 90%);background-size:220% 100%;
@@ -126,7 +127,6 @@ body.open .music{display:grid}
 <canvas id="dust" aria-hidden="true"></canvas>
 <!-- Музыка встроена в файл. Чтобы заменить: src="music/bg.mp3" и положите свой mp3 в папку music -->
 <audio id="bg" loop preload="auto" src="/dombyra-syrlasu-valsy_(mufm.me).mp3"></audio>
-
 <!-- Doors -->
 <div class="intro" id="intro">
   <div class="door l"></div><div class="door r"></div>
@@ -146,14 +146,19 @@ body.open .music{display:grid}
   <div class="lang pre"><div role="group" aria-label="Тил / Язык">
     <button data-l="cyr" aria-pressed="true">UZ</button><button data-l="ru" aria-pressed="false">RU</button></div></div>
 
-  <svg class="arch pre" viewBox="0 0 320 120" fill="none" aria-hidden="true">
-    <path d="M1 120V76C1 38 112 26 160 3c48 23 159 35 159 73v44" stroke="#c9a24b" stroke-opacity=".7" vector-effect="non-scaling-stroke"/>
-    <path d="M13 120V80C13 50 116 40 160 20c44 20 147 30 147 60v40" stroke="#c9a24b" stroke-opacity=".25" vector-effect="non-scaling-stroke"/>
-    <path d="M160 6l3 6-3 6-3-6z" fill="#f1dc9a"/>
-  </svg>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><clipPath id="archClip" clipPathUnits="objectBoundingBox"><path d="M0 1V.6333C0 .3167 .35 .2167 .5 .025C.65 .2167 1 .3167 1 .6333V1Z"/></clipPath></svg>
+  <div class="archwrap pre" aria-hidden="true">
+    <div class="capbg"></div>
+    <svg viewBox="0 0 320 120" fill="none">
+      <path d="M.5 120V76C.5 38 112 26 160 3C208 26 319.5 38 319.5 76V120" stroke="#c9a24b" stroke-opacity=".75" vector-effect="non-scaling-stroke"/>
+      <path d="M13 120V82C13 54 118 42 160 22C202 42 307 54 307 82V120" stroke="#c9a24b" stroke-opacity=".28" vector-effect="non-scaling-stroke"/>
+      <polygon points="160.0,63.0 162.5,74.0 172.0,68.0 166.0,77.5 177.0,80.0 166.0,82.5 172.0,92.0 162.5,86.0 160.0,97.0 157.5,86.0 148.0,92.0 154.0,82.5 143.0,80.0 154.0,77.5 148.0,68.0 157.5,74.0" stroke="#f1dc9a" stroke-opacity=".85" stroke-width="1.2" fill="rgba(201,162,75,.14)" vector-effect="non-scaling-stroke"/>
+      <circle cx="160" cy="80" r="3" fill="#f1dc9a"/>
+      <path d="M160 3l3.5 6-3.5 6-3.5-6z" fill="#f1dc9a"/>
+    </svg>
+  </div>
 
   <section class="card">
-    <div class="bism pre" lang="ar">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
     <div class="sub pre" data-t="sub"></div>
     <h1 class="pre" data-t="title"></h1>
     <div class="rule pre"><i></i><b></b><i></i></div>
@@ -205,8 +210,8 @@ body.open .music{display:grid}
 const CONFIG = {
   start: "2026-10-07T08:00:00+05:00",   // время мероприятия (Узбекистан, UTC+5)
   durationHours: 4,
-  lat: null,  lng: null,                // координаты дома, например 39.6542, 66.9597
-  address: "Samarkand Yuqori chordara MFY",                 // запасной адрес для карт, если нет координат
+  lat: 39.6713889, lng: 66.886,         // 39°40'17.0"N 66°53'09.6"E
+  address: "Samarkand",                 // запасной адрес для карт, если нет координат
   phone: "",                            // например "+998901234567"
   telegram: ""                          // имя без @, например "yusupovlar"
 };
@@ -214,33 +219,33 @@ const CONFIG = {
 const T = {
   cyr:{
     sub:"Таклифнома", title:"Наҳор оши",
-    body:"Юсуповлар  оилаcи фарзандларининг никоҳ тўйи муносабати билан Сизни Наҳор оши дастурхонига таклиф этамиз. Қадамингиз қутлуғ бўлсин!",
+    body:"Юсуповлар оиласи фарзандларининг никоҳ тўйи муносабати билан Сизни Наҳор оши дастурхонига таклиф этамиз. Қадамингиз қутлуғ бўлсин!",
     lblDate:"Сана ва вақт", date:"7 октябрь, 2026 · чоршанба · 08:00",
-    lblPlace:"Манзил", place:"Самарқанд шаҳри, Юқори Чордара МФЙ, Юсуповлар хонадони",
+    lblPlace:"Манзил", place:"Самарқанд шаҳри, Юсупов Искандар ака хонадони",
     timer:"Тадбирга қолган вақт", over:"Тадбир бошланди. Хуш келибсиз!",
     d:"кун", h:"соат", m:"дақиқа", s:"сония",
     yandex:"Яндекс Харита", cal:"Тақвимга қўшиш",
     rsvpT:"Келасизми?", rsvpP:"Дастурхонни тайёрлаш учун, илтимос, келишингизни олдиндан билдиринг.",
     tg:"Телеграмда тасдиқлаш", tel:"Қўнғироқ қилиш",
-    signLead:"Ҳурмат билан", family:"Юсуповлар хонадонлари",
+    signLead:"Ҳурмат билан", family:"Юсуповлар оиласи",
     greetN:n=>`Ҳурматли ${n}!`, greet:"Ҳурматли меҳмон!",
     rsvpMsg:n=>`Ассалому алайкум! ${n||"Мен"} 7 октябрь Наҳор оши маросимига келаман.`,
-    calTitle:"Наҳор оши — Юсуповлар "
+    calTitle:"Наҳор оши — Юсуповлар оиласи"
   },
   ru:{
     sub:"Приглашение", title:"Нахор ош",
-    body:"По случаю свадьбы детей семей Юсуповых приглашаем вас на утренний плов — нахор ош. Будем рады видеть вас за нашим дастарханом!",
+    body:"По случаю свадьбы детей семьи Юсуповых приглашаем вас на утренний плов — нахор ош. Будем рады видеть вас за нашим дастарханом!",
     lblDate:"Дата и время", date:"7 октября 2026 · среда · 08:00",
-    lblPlace:"Адрес", place:"г. Самарканд, дом семьи Юсуповых",
+    lblPlace:"Адрес", place:"г. Самарканд, дом Юсупова Искандара",
     timer:"До начала осталось", over:"Мероприятие началось. Добро пожаловать!",
     d:"дней", h:"часов", m:"минут", s:"секунд",
     yandex:"Яндекс Карты", cal:"Добавить в календарь",
     rsvpT:"Вы придёте?", rsvpP:"Чтобы мы успели накрыть дастархан, подтвердите, пожалуйста, ваш приход заранее.",
     tg:"Подтвердить в Telegram", tel:"Позвонить",
-    signLead:"С уважением", family:"Семьи Юсуповых ",
+    signLead:"С уважением", family:"Семья Юсуповых",
     greetN:n=>`Дорогой(ая) ${n}!`, greet:"Дорогие гости!",
     rsvpMsg:n=>`Здравствуйте! ${n||"Я"} приду на нахор ош 7 октября.`,
-    calTitle:"Нахор ош — семьи Юсуповых"
+    calTitle:"Нахор ош — семья Юсуповых"
   }
 };
 
