@@ -292,11 +292,13 @@ document.addEventListener("visibilitychange",()=>{ if(document.hidden && playing
 requestAnimationFrame(()=>requestAnimationFrame(()=>document.body.classList.add("open")));
 /* Браузеры блокируют автозапуск звука: пробуем сразу, а если нельзя - включаем при первом касании/клике */
 play();
+const EVS=["click","touchend","pointerup","keydown"];
 function firstTouch(){
-  if(!playing && !userPaused) play();
-  ["pointerdown","touchstart","keydown"].forEach(e=>removeEventListener(e,firstTouch));
+  if(userPaused) return;
+  audio.volume=0;
+  audio.play().then(()=>{ playing=true; ui(); fade(MAXV); EVS.forEach(e=>removeEventListener(e,firstTouch)); }).catch(()=>{});
 }
-["pointerdown","touchstart","keydown"].forEach(e=>addEventListener(e,firstTouch,{passive:true}));
+EVS.forEach(e=>addEventListener(e,firstTouch));
 
 /* Floating moons, stars and gold dust */
 (function(){
