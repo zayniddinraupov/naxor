@@ -15,7 +15,7 @@
 <style>
 :root{
   --night:#062226; --teal:#0d3c40; --turq:#2bb3aa; --gold:#c9a24b; --gold-l:#f1dc9a;
-  --ivory:#f6efdc; --muted:#9fc0bb; --pom:#9b2342;
+  --ivory:#f6efdc; --glass:#072629; --muted:#9fc0bb; --pom:#9b2342;
   --serif:'Noto Serif',Georgia,serif; --sans:'Montserrat',system-ui,sans-serif;
   --star:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cg fill='none' stroke='%23c9a24b' stroke-opacity='.28'%3E%3Crect x='14' y='14' width='32' height='32'/%3E%3Crect x='14' y='14' width='32' height='32' transform='rotate(45 30 30)'/%3E%3Ccircle cx='30' cy='30' r='6'/%3E%3C/g%3E%3C/svg%3E");
 }
@@ -59,12 +59,9 @@ main{position:relative;z-index:2;width:100%;max-width:420px}
 .lang button{border:0;background:none;color:var(--muted);font:600 12px var(--sans);padding:7px 13px;min-height:32px;border-radius:14px;cursor:pointer}
 .lang button[aria-pressed=true]{background:var(--gold);color:#1b1500}
 
-.archwrap{position:relative;aspect-ratio:320/120;margin-bottom:-1px}
-.capbg{position:absolute;inset:0;background:rgba(7,38,41,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);clip-path:url(#archClip)}
-.archwrap svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.card{background:rgba(7,38,41,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border:1px solid rgba(201,162,75,.45);border-top:0;border-radius:0 0 22px 22px;padding:6px 24px 34px;text-align:center;
-  box-shadow:0 30px 70px rgba(0,0,0,.55)}
+.shellwrap{filter:drop-shadow(0 30px 34px rgba(0,0,0,.5))}
+.card{position:relative;background:var(--glass);padding:calc(37.5% + 6px) 24px 34px;text-align:center}
+.frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 .sub{font-size:14px;letter-spacing:.06em;color:var(--turq);font-weight:500}
 h1{font-family:var(--serif);font-weight:700;font-size:44px;line-height:1.1;margin:6px 0 4px;
   background:linear-gradient(100deg,#b88a2a 10%,#fff3c4 45%,#c9a24b 60%,#b88a2a 90%);background-size:220% 100%;
@@ -146,19 +143,9 @@ body.open .music{display:grid}
   <div class="lang pre"><div role="group" aria-label="Тил / Язык">
     <button data-l="cyr" aria-pressed="true">UZ</button><button data-l="ru" aria-pressed="false">RU</button></div></div>
 
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><clipPath id="archClip" clipPathUnits="objectBoundingBox"><path d="M0 1V.6333C0 .3167 .35 .2167 .5 .025C.65 .2167 1 .3167 1 .6333V1Z"/></clipPath></svg>
-  <div class="archwrap pre" aria-hidden="true">
-    <div class="capbg"></div>
-    <svg viewBox="0 0 320 120" fill="none">
-      <path d="M.5 120V76C.5 38 112 26 160 3C208 26 319.5 38 319.5 76V120" stroke="#c9a24b" stroke-opacity=".75" vector-effect="non-scaling-stroke"/>
-      <path d="M13 120V82C13 54 118 42 160 22C202 42 307 54 307 82V120" stroke="#c9a24b" stroke-opacity=".28" vector-effect="non-scaling-stroke"/>
-      <polygon points="160.0,63.0 162.5,74.0 172.0,68.0 166.0,77.5 177.0,80.0 166.0,82.5 172.0,92.0 162.5,86.0 160.0,97.0 157.5,86.0 148.0,92.0 154.0,82.5 143.0,80.0 154.0,77.5 148.0,68.0 157.5,74.0" stroke="#f1dc9a" stroke-opacity=".85" stroke-width="1.2" fill="rgba(201,162,75,.14)" vector-effect="non-scaling-stroke"/>
-      <circle cx="160" cy="80" r="3" fill="#f1dc9a"/>
-      <path d="M160 3l3.5 6-3.5 6-3.5-6z" fill="#f1dc9a"/>
-    </svg>
-  </div>
-
-  <section class="card">
+  <div class="shellwrap">
+  <section class="card" id="shell">
+    <svg class="frame pre" id="frame" aria-hidden="true"></svg>
     <div class="sub pre" data-t="sub"></div>
     <h1 class="pre" data-t="title"></h1>
     <div class="rule pre"><i></i><b></b><i></i></div>
@@ -203,6 +190,7 @@ body.open .music{display:grid}
 
     <div class="sign pre"><span data-t="signLead"></span><strong data-t="family"></strong></div>
   </section>
+  </div>
 </main>
 
 <script>
@@ -308,6 +296,29 @@ mBtn.onclick = ()=> playing ? pause() : play();
 audio.addEventListener("error",()=>{ mBtn.hidden=true; });
 audio.addEventListener("loadedmetadata",()=>{ mBtn.hidden=false; });
 document.addEventListener("visibilitychange",()=>{ if(document.hidden && playing) audio.pause(); else if(playing) audio.play().catch(()=>{}); });
+
+/* One continuous arch-shaped card (no seams) */
+(function(){
+  const shell=$("shell"), fr=$("frame");
+  function build(){
+    const w=shell.offsetWidth, h=shell.offsetHeight, ch=w*120/320, R=22;
+    const X=v=>(v*w/320).toFixed(1), Y=v=>(v*ch/120).toFixed(1);
+    const outer=`M.5 ${h-R}V${Y(76)}C.5 ${Y(38)} ${X(112)} ${Y(26)} ${X(160)} ${Y(3)}C${X(208)} ${Y(26)} ${w-.5} ${Y(38)} ${w-.5} ${Y(76)}V${h-R}Q${w-.5} ${h-.5} ${w-R} ${h-.5}H${R}Q.5 ${h-.5} .5 ${h-R}Z`;
+    const r2=14, i1=X(13), i2=(w-13*w/320).toFixed(1);
+    const inner=`M${i1} ${h-r2-12}V${Y(82)}C${i1} ${Y(54)} ${X(118)} ${Y(42)} ${X(160)} ${Y(22)}C${X(202)} ${Y(42)} ${i2} ${Y(54)} ${i2} ${Y(82)}V${h-r2-12}Q${i2} ${h-12} ${(i2-r2)} ${h-12}H${(+i1+r2)}Q${i1} ${h-12} ${i1} ${h-r2-12}Z`;
+    shell.style.clipPath=`path('${outer}')`;
+    fr.setAttribute("viewBox",`0 0 ${w} ${h}`);
+    const cx=w/2, cy=ch*80/120, pts=[];
+    for(let i=0;i<16;i++){ const r=i%2?6.5:17, a=i*Math.PI/8-Math.PI/2; pts.push((cx+r*Math.cos(a)).toFixed(1)+","+(cy+r*Math.sin(a)).toFixed(1)); }
+    fr.innerHTML=
+      `<path d="${outer}" fill="none" stroke="#c9a24b" stroke-opacity=".75"/>`+
+      `<path d="${inner}" fill="none" stroke="#c9a24b" stroke-opacity=".28"/>`+
+      `<polygon points="${pts.join(" ")}" stroke="#f1dc9a" stroke-opacity=".85" stroke-width="1.2" fill="rgba(201,162,75,.14)"/>`+
+      `<circle cx="${cx}" cy="${cy}" r="3" fill="#f1dc9a"/>`+
+      `<path d="M${cx} ${Y(3)}l3.5 6-3.5 6-3.5-6z" fill="#f1dc9a"/>`;
+  }
+  new ResizeObserver(build).observe(shell); build();
+})();
 
 /* Open doors */
 $("open").onclick = ()=>{
